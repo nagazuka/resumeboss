@@ -32,13 +32,29 @@
   </script>
 
   <script type="text/javascript">
+
+    function getDateStr(dateObj) {
+      var str = "";
+      if (dateObj) {
+        if (dateObj.month) {
+          str += dateObj.month;
+          str += "-";
+        }
+        if (dateObj.year) {
+          str += dateObj.year;
+        }
+      }
+      return str;
+    }
+
     function loadData() {
+      $("#step1-status").text("Done!");
+      $("#step1-status").addClass("label-success");
+      $("#step2-row").removeClass("hide");
+
       IN.API.Profile("me")
       .fields("firstName", "lastName", "headline","summary", "specialties", "skills", "certifications", "educations", "courses", "volunteer","date-of-birth","main-address", "picture-url","public-profile-url", "industry", "positions")
       .result(function(result) {
-        $("#step1-status").text("Done!");
-        $("#step1-status").addClass("label-success");
-
         var profile = result.values[0];
         var profHTML = "<h2>" + profile.firstName + " " + profile.lastName + "</h2>"; 
         profHTML += "<h4>" + profile.headline + "</h4>"; 
@@ -48,7 +64,7 @@
         var positions = profile.positions.values;
         $.each(positions, function(index, item) {
           profHTML += "<h4>" + item.company.name + "</h4>"; 
-          profHTML += "<h4><small>" + item.startDate.month + "-" + item.startDate.year + " - "+ item.endDate.month + "-" + item.endDate.year +  "</small></h4>"; 
+          profHTML += "<h4><small>" + getDateStr(item.startDate) + " - "+ getDateStr(item.endDate) + "</small></h4>"; 
           profHTML += "<p>" + item.summary + "</p>"; 
         });
 
@@ -68,7 +84,7 @@
       <h1>ResumeBoss <small>Creates resumes....like a boss</small>
       </h1>
     </div>
-    <div class="row">
+    <div id="step1-row" class="row">
       <div class="span4">
         <h2>Step 1 <small>Sign in</small></h2>
         <p>
@@ -86,7 +102,7 @@
         </p>
       </div>
     </div>
-    <div class="row">
+    <div id="step2-row" class="row hide">
       <div class="span4">
         <h2>Step 2 <small>Review</small></h2>
         <p>
@@ -103,12 +119,12 @@
         <p>
       </div>
     </div> 
-    <div class="row">
+    <div id="step3-row" class="row hide">
       <div class="span4">
         <h2>Step 3 <small>Generate</small></h2>
         <p>If you're sure that everything is as you want it, go ahead and press the big green Generate button!</p>
       </div>
-       offset1<div class="span5 offset1">
+      <div class="span5 offset1">
           <a class="btn btn-success" href="#"><i class="icon-play icon-white"></i> Generate resume</a>
       </div>
     </div>

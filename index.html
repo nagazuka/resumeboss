@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="utf-8">
+  <title>ResumeBoss - Generate beautiful resumes from your LinkedIn profile</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+  <link href='http://fonts.googleapis.com/css?family=Oxygen' rel='stylesheet' type='text/css'>
+
+  <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+  <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <script src="lib/zepto.min.js" type="text/javascript"></script>
+
+  <script type="text/javascript">
+    function onLinkedInLoad() {
+      IN.Event.on(IN, "auth", loadData);
+    }
+  </script>
+
+  <script type="text/javascript" src="http://platform.linkedin.com/in.js">
+    api_key: egfb1tl2aygo
+    onLoad: onLinkedInLoad
+    authorize: true
+  </script>
+
+  <script type="text/javascript">
+    function loadData() {
+      IN.API.Profile("me")
+      .fields("firstName", "lastName", "headline","summary", "specialties", "skills", "certifications", "educations", "courses", "volunteer","date-of-birth","main-address", "picture-url","public-profile-url", "industry", "positions")
+      .result(function(result) {
+        $("#step1-status").text("Done!");
+        $("#step1-status").addClass("label-success");
+
+        var profile = result.values[0];
+        var profHTML = "<h2>" + profile.firstName + " " + profile.lastName + "</h2>"; 
+        profHTML += "<h4>" + profile.headline + "</h4>"; 
+        profHTML += "<p><h6>Summary</h6>"+profile.summary+"</p>";
+        profHTML += "<h3>Experience</h3>"; 
+
+        var positions = profile.positions.values;
+        $.each(positions, function(index, item) {
+          profHTML += "<h4>" + item.company.name + "</h4>"; 
+          profHTML += "<h4><small>" + item.startDate.month + "-" + item.startDate.year + " - "+ item.endDate.month + "-" + item.endDate.year +  "</small></h4>"; 
+          profHTML += "<p>" + item.summary + "</p>"; 
+        });
+
+        profHTML += "<h3>Education</h3>"; 
+        profHTML += "<h3>Debug</h3>"; 
+        profHTML += "<code>" + JSON.stringify(result) + "</code>";
+        $("#profile").html(profHTML);
+        //$("#profile").html(JSON.stringify(result));
+      });
+    }
+  </script>
+
+</head>
+<body>
+  <div class="container">
+    <div class="page-header">
+      <h1>ResumeBoss <small>Creates resumes....like a boss</small>
+      </h1>
+    </div>
+    <div class="row">
+      <div class="span4">
+        <h2>Step 1 <small>Sign in</small></h2>
+        <p>
+        All your data are belong to us. Please sign in to LinkedIn and peacefully handover your data. Just kidding... we won't store, sell or hang your details above our bed, see our <a href="#privacy">Privacy Policy</a>. But <em>seriously</em>, we do need you to sign in to LinkedIn. 
+        </p>
+      </div>
+      <div class="span5 offset1">
+        <p>
+          <span id="step1-status" class="label">Not yet signed in</span>
+        </p>
+        <p>
+        <script type="in/Login">
+          Hey, you're logged in! This is <strong><?js= firstName ?> <?js= lastName ?></strong>, right? Let's continue then...
+        </script>
+        </p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="span4">
+        <h2>Step 2 <small>Review</small></h2>
+        <p>
+          Just go through everything we loaded from your profile and tell us whether you want it ending up in the resume. Hell, even edit it like crazy if you feel the need to. 
+        </p>
+      </div>
+      <div class="span5 offset1">
+        <p>
+          <span id="step2-status" class="label">Not yet reviewed</span>
+        </p>
+        <div id="profile"></div>
+        <p>
+          <a class="btn btn-success" href="#"><i class="icon-thumbs-up icon-white"></i> Confirm all</a>
+        <p>
+      </div>
+    </div> 
+    <div class="row">
+      <div class="span4">
+        <h2>Step 3 <small>Generate</small></h2>
+        <p>If you're sure that everything is as you want it, go ahead and press the big green Generate button!</p>
+      </div>
+       offset1<div class="span5 offset1">
+          <a class="btn btn-success" href="#"><i class="icon-play icon-white"></i> Generate resume</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

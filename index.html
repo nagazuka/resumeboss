@@ -33,6 +33,14 @@
 
   <script type="text/javascript">
 
+    function getSummaryStr(text) {
+      var str = "";
+      if (text) {
+        str = text.replace(/\n/g, "<br />");
+      }
+      return str;
+    }
+
     function getDateStr(dateObj) {
       var str = "";
       if (dateObj) {
@@ -65,14 +73,16 @@
         $.each(positions, function(index, item) {
           profHTML += "<h4>" + item.company.name + "</h4>"; 
           profHTML += "<h4><small>" + getDateStr(item.startDate) + " - "+ getDateStr(item.endDate) + "</small></h4>"; 
-          profHTML += "<p>" + item.summary + "</p>"; 
+          profHTML += "<p>" + getSummaryStr(item.summary) + "</p>"; 
         });
 
         profHTML += "<h3>Education</h3>"; 
-        profHTML += "<h3>Debug</h3>"; 
-        profHTML += "<code>" + JSON.stringify(result) + "</code>";
         $("#profile").html(profHTML);
         //$("#profile").html(JSON.stringify(result));
+        
+        var debugHTML = "<h3>Debug</h3>"; 
+        debugHTML += "<code>" + JSON.stringify(result) + "</code>";
+        $("#debug").html(debugHTML);
       });
     }
   </script>
@@ -126,6 +136,10 @@
       </div>
       <div class="span5 offset1">
           <a class="btn btn-success" href="#"><i class="icon-play icon-white"></i> Generate resume</a>
+      </div>
+    </div>
+    <div id="debug-row" class="row">
+      <div id="debug" class="span10">
       </div>
     </div>
   </div>

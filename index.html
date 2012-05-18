@@ -58,6 +58,9 @@
     function loadData() {
       $("#step1-status").text("Done!");
       $("#step1-status").addClass("label-success");
+
+      $("#step2-status").text("Loading...");
+      $("#step2-status").removeClass("hide");
       $("#step2-row").removeClass("hide");
 
       IN.API.Profile("me")
@@ -102,7 +105,7 @@
         });
         profHTML += "</p>";
 
-        $("#step2-status").removeClass("hide");
+        $("#step2-status").text("Not yet reviewed");
         $("#profile").html(profHTML);
 
         //Show confirm buttons after loading
@@ -117,11 +120,18 @@
 
       function generateResume(content) {
         $("#step2-status").text("Done!");
+        $("#step2-status").addClass("label-success");
+
+        $("#step3-status").text("Loading...");
+        $("#step3-status").removeClass("hide");
         $.get('/generate', function(data){
           var file = data;
-          var linkHTML = "<p><a href='download/" + file + "'>Download</a></p>"; 
+          var linkHTML = "<p><a href='download/" + file + "'><img src='images/pdf1.png'></a></p>"; 
+          linkHTML += "<p><a href='download/" + file + "'>Download resume</a></p>"; 
           $("#step3-download-link").html(linkHTML);
           $("#step3-download-link").removeClass("hide");
+          $("#step3-status").text("Done!");
+          $("#step3-status").addClass("label-success");
           $("#step3-row").removeClass("hide");
         })
         return false;
@@ -133,7 +143,7 @@
 <body>
   <div class="container">
     <div class="page-header">
-      <h1>ResumeBoss <small>Creates resumes....like a boss</small>
+      <h1>Resume<span style="color: red;">Boss <small>Creates resumes....<i>like a boss</i></small>
       </h1>
     </div>
     <div id="step1-row" class="row">
@@ -168,7 +178,7 @@
         <div id="profile"></div>
         <br />
         <p>
-          <a id="step3-generate" class="btn btn-success" href="#"><i class="icon-play icon-white"></i> Generate resume</a>
+          <a id="step3-generate" class="btn btn-success hide" href="#"><i class="icon-play icon-white"></i> Generate resume</a>
         <p>
       </div>
     </div> 
@@ -178,6 +188,9 @@
         <p>Your resume is ready! Click the link to download the PDF file. Good luck with job hunting!</p>
       </div>
       <div class="span5 offset1">
+          <p>
+            <span id="step3-status" class="label hide">Not yet generated</span>
+          </p>
           <br />
           <div id="step3-download-link" class="well hide"></div>
       </div>

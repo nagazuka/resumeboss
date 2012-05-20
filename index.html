@@ -129,7 +129,10 @@
 
         //Show confirm buttons after loading
         var confirmButton = $("#step3-generate")
-        confirmButton.on("click", generateResume);
+        confirmButton.on("click", function() {
+          generateResume(profile);
+          return false;
+        });
         confirmButton.removeClass("hide");
         
         var debugHTML = "<h3>Debug</h3>"; 
@@ -137,17 +140,20 @@
         $("#debug").html(debugHTML);
       });
 
-      function generateResume(content) {
+      function generateResume(profile) {
         $("#step2-status").text("Done!");
         $("#step2-status").addClass("label-success");
+        $("#step3-row").addClass("hide");
+        $("#step3-spinner").empty();
 
         $("#step3-status").text("Loading...");
         var step3Spinner = createSpinner('#step3-spinner');
         $("#step3-status").removeClass("hide");
-        $.get('/generate', function(data){
+        var profStr = JSON.stringify(profile);
+        $.post('/generate', {'template': 'designers-cv', 'profile': profStr}, function(data){
           var file = data;
-          var linkHTML = "<p><a href='download/" + file + "'><img src='images/pdf1.png'></a></p>"; 
-          linkHTML += "<p><a href='download/" + file + "'>Download resume</a></p>"; 
+          var linkHTML = "<p><a href='download/" + file + "' target='_blank'><img src='images/pdf1.png'></a></p>"; 
+          linkHTML += "<p><a href='download/" + file + "' target='_blank'>Download resume</a></p>"; 
           step3Spinner.stop(); 
           $("#step3-download-link").html(linkHTML);
           $("#step3-download-link").removeClass("hide");

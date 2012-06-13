@@ -60,16 +60,20 @@
 \cvitem{}{#{summary}}
 <?py #endif ?>
 
+<?py if len(positions) > 0: ?>
 \section{Experience}
 <?py for position in positions: ?>
 %\cventry{year--year}{#{position['title']}}{#{position['company']['name']}}{City}{}{General description no longer than 1--2 lines.\newline{}%
 \cventry{#{position['period']}}{#{position['title']}}{#{position['company']['name']}}{}{}{#{position['summary']}\newline{}}
 <?py #endfor ?>
+<?py #endif ?>
 
+<?py if len(educations) > 0: ?>
 \section{Education}
 <?py for education in educations: ?>
 \cventry{#{education['period']}}{\textit{#{education['fieldOfStudy']}}, #{education['degree']}}{#{education['schoolName']}}{}{}{#{education['notes']}}  
 <?py #endfor ?>
+<?py #endif ?>
 
 %\section{Master thesis}
 %\cvitem{title}{\emph{Title}}
@@ -99,20 +103,24 @@
 %\subsection{Miscellaneous}
 %\cventry{year--year}{Job title}{Employer}{City}{}{Description}
 
+<?py if len(certifications) > 0: ?>
 \section{Certifications}
 <?py for certification in certifications: ?>
 \cvlistitem{ #{certification['name']} }
 <?py #endfor ?>
+<?py #endif ?>
 
 %\section{Certifications}
 %\cvitemwithcomment{Language 1}{Skill level}{Comment}
 %\cvitemwithcomment{Language 2}{Skill level}{Comment}
 %\cvitemwithcomment{Language 3}{Skill level}{Comment}
 
+<?py if len(skills) > 0: ?>
 \section{Skills}
 <?py for skillpair in skills: ?>
 \cvdoubleitem{}{ #{skillpair[0]['skill']['name']} }{}{ #{skillpair[1]['skill']['name']} }
 <?py #endfor ?>
+<?py #endif ?>
 
 %\section{Interests}
 %\cvitem{hobby 1}{Description}

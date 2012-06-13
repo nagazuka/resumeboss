@@ -10,7 +10,7 @@ def transform_dates(position):
     else:
       startDate = position['startDate']['year']
 
-    if 'isCurrent' in position and position['isCurrent'] == 'true':
+    if 'isCurrent' in position and (position['isCurrent'] == 'true' or position['isCurrent'] == True):
       endDate = 'present'
     elif 'endDate' in position: 
       endDate = position['endDate']['year']

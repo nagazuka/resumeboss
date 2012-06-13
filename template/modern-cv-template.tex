@@ -110,9 +110,9 @@
 %\cvitemwithcomment{Language 3}{Skill level}{Comment}
 
 \section{Skills}
-\cvdoubleitem{category 1}{XXX, YYY, ZZZ}{category 4}{XXX, YYY, ZZZ}
-\cvdoubleitem{category 2}{XXX, YYY, ZZZ}{category 5}{XXX, YYY, ZZZ}
-\cvdoubleitem{category 3}{XXX, YYY, ZZZ}{category 6}{XXX, YYY, ZZZ}
+<?py for skillpair in skills: ?>
+\cvdoubleitem{}{ #{skillpair[0]['skill']['name']} }{}{ #{skillpair[1]['skill']['name']} }
+<?py #endfor ?>
 
 %\section{Interests}
 %\cvitem{hobby 1}{Description}

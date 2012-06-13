@@ -1,3 +1,9 @@
+from itertools import izip
+
+def pairwise(iterable):
+    a = iter(iterable)
+    return izip(a, a)
+
 def transform_dates(position):
     if not 'startDate' in position: 
       startDate = ''
@@ -27,6 +33,10 @@ def transform_linkedin(profile):
   educations = profile['educations']['values']
   certifications = profile['certifications']['values']
   skills = profile['skills']['values']
+  
+  paired_skills = []
+  for skill1, skill2 in pairwise(skills):
+    paired_skills.append( (skill1, skill2) ) 
 
   for position in positions:
     position['period'] = transform_dates(position)    
@@ -44,7 +54,8 @@ def transform_linkedin(profile):
     else:
       position['notes'] = position['notes'].replace('\n',r'\\')
       position['notes'] = position['notes'].replace('&',r'\&')
-  
+
+   
   context = {}
   context['name'] = name
   context['firstName'] = firstName
@@ -54,6 +65,6 @@ def transform_linkedin(profile):
   context['positions'] = positions
   context['educations'] = educations
   context['certifications'] = certifications
-  context['skills'] = skills
+  context['skills'] = paired_skills
 
   return context

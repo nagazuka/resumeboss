@@ -33,8 +33,17 @@ application = tornado.web.Application([
 ], debug=True)
 
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.DEBUG, 
+    try:
+      logging.basicConfig(level=logging.DEBUG, 
                         format='%(asctime)s %(levelname)s %(message)s')
-    logging.info("ResumeBoss server started.")
-    application.listen(18080)
-    tornado.ioloop.IOLoop.instance().start()
+      logging.info("ResumeBoss server started.")
+      application.listen(18080)
+      tornado.ioloop.IOLoop.instance().start()
+    except Exception as e:
+      text = "Error occurred during starting server:\n%s\nStacktrace:\n" % e
+      text = text + traceback.format_exc()
+      to_addr = "s.anoep@gmail.com"
+      from_addr = "tornado-resumeboss@nagazuka.nl"
+      subject = "[ResumeBoss] [ERROR] Unexpected error"
+      mail.mail(text, from_addr, to_addr, subject)
+      raise

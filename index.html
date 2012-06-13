@@ -9,7 +9,7 @@
   <meta name="author" content="">
 
   <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" />
-  <link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+  <link href="bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
   <link href='http://fonts.googleapis.com/css?family=Oxygen' rel='stylesheet' type='text/css'>
   <link href='http://fonts.googleapis.com/css?family=Black+Ops+One' rel='stylesheet' type='text/css'>
 
@@ -72,9 +72,17 @@
       return spinner;
     }
 
+    function reinitialize() {
+      $("#step2-row").addClass("hide");
+      $("#step3-row").addClass("hide");
+
+      window.location.reload(false);
+    }
+
     function loadData() {
       $("#step1-status").text("Done!");
       $("#step1-status").addClass("label-success");
+
 
       $("#step2-status").text("Loading...");
       $("#step2-status").removeClass("hide");
@@ -85,6 +93,12 @@
       IN.API.Profile("me")
       .fields("firstName", "lastName", "headline","summary", "specialties", "skills", "certifications", "educations", "courses", "volunteer","date-of-birth","main-address", "picture-url","public-profile-url", "industry", "positions")
       .result(function(result) {
+        $("#step1-logout").removeClass("hide");
+        var logoutButton = $("#step1-logout-button")
+        logoutButton.on("click", function() {
+          IN.User.logout(reinitialize);
+          return false;
+        });
 
         var profile = result.values[0];
         var profHTML = "<h2>" + profile.firstName + " " + profile.lastName + "</h2>"; 
@@ -153,6 +167,7 @@
         $("#step3-spinner").empty();
 
         $("#step3-status").text("Loading...");
+        $("#empty-row-spinner").removeClass("hide");
         var step3Spinner = createSpinner('#step3-spinner');
         scrollTo("#step3-spinner");
 
@@ -170,6 +185,7 @@
           var linkHTML = "<p><a href='download/" + file + "' target='_blank'><img src='images/pdf1.png'></a></p>"; 
           linkHTML += "<p><a href='download/" + file + "' target='_blank'>Download resume</a></p>"; 
           step3Spinner.stop(); 
+          $("#empty-row-spinner").addClass("hide");
           $("#step3-download-link").html(linkHTML);
           $("#step3-download-link").removeClass("hide");
           $("#step3-status").text("Done!");
@@ -227,6 +243,12 @@
         </script>
         </p>
       </div>
+      <div class="span1">
+        <span id="step1-logout" class="hide">
+          Not your profile?
+          <button id="step1-logout-button" class="btn btn-mini btn-inverse">Logout</button>
+        </span>
+      </div>
     </div>
     <div id="step2-row" class="row hide">
       <div class="span4">
@@ -248,6 +270,12 @@
         <p>
       </div>
     </div> 
+    <div id="empty-row-spinner" class="row hide">
+      <div id="empty-row-div" class="span10 offset1">
+      &nbsp;<br />
+      &nbsp;<br />
+      </div>
+    </div>
     <div id="step3-row" class="row hide">
       <div class="span4">
         <h2>Step 3 <small>Download</small></h2>
@@ -263,6 +291,12 @@
     </div>
     <div id="debug-row" class="row hide">
       <div id="debug" class="span10">
+      &nbsp;
+      </div>
+    </div>
+    <div id="empty-row" class="row">
+      <div id="empty-row-ads-div" class="span10 offset1">
+      &nbsp;
       </div>
     </div>
     <div id="ads-row" class="row">

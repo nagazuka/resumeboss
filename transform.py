@@ -28,10 +28,16 @@ def transform_linkedin(profile):
   lastName = profile['lastName']
   name = firstName + ' ' + lastName
   headline = profile['headline']
-  summary = profile['summary']
+  if ('summary' in profile):
+    summary = profile['summary']
+  else:
+    summary = ''
   positions = profile['positions']['values']
   educations = profile['educations']['values']
-  certifications = profile['certifications']['values']
+  if ('certifications' in profile):
+    certifications = profile['certifications']['values']
+  else:
+    certifications = []
   skills = profile['skills']['values']
   
   paired_skills = []

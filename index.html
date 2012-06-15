@@ -103,8 +103,11 @@
         var profile = result.values[0];
         var profHTML = "<h2>" + profile.firstName + " " + profile.lastName + "</h2>"; 
         profHTML += "<h4>" + profile.headline + "</h4>"; 
-        profHTML += " <button class='close' data-dismiss='alert'>×</button>"
-        profHTML += "<p><h6>Summary</h6>"+profile.summary+"</p>";
+
+        if ('summary' in profile) {
+          profHTML += " <button class='close' data-dismiss='alert'>×</button>"
+          profHTML += "<p><h6>Summary</h6>"+profile.summary+"</p>";
+        }
 
         profHTML += "<h3>Experience</h3>"; 
         var positions = profile.positions.values;
@@ -125,6 +128,7 @@
           profHTML += "<p>" + getSummaryStr(item.notes) + "</p>"; 
         });
 
+        if (certifications in profile && values in profile.certifications) {
         profHTML += " <button class='close' data-dismiss='alert'>×</button>"
         profHTML += "<h3>Certifications</h3>"; 
         profHTML += "<ul>";
@@ -133,6 +137,7 @@
           profHTML += "<li>" + item.name + "</li>"; 
         });
         profHTML += "</ul>";
+        }
 
         profHTML += " <button class='close' data-dismiss='alert'>×</button>"
         profHTML += "<h3>Skills</h3>"; 

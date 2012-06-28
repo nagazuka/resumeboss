@@ -1,19 +1,29 @@
 from itertools import izip
+import logging
 
 def pairwise(iterable):
     a = iter(iterable)
     return izip(a, a)
 
+
+def transform_date(date):
+    res = ''
+    if 'month' in date:
+      res = res + str(date['month']) + '/'
+    if 'year' in date:
+      res = res + str(date['year']) 
+    return res
+
 def transform_dates(position):
     if not 'startDate' in position: 
       startDate = ''
     else:
-      startDate = position['startDate']['year']
+      startDate = transform_date(position['startDate'])
 
     if 'isCurrent' in position and (position['isCurrent'] == 'true' or position['isCurrent'] == True):
       endDate = 'present'
     elif 'endDate' in position: 
-      endDate = position['endDate']['year']
+      endDate = transform_date(position['endDate'])
     else:
       endDate = ''
 
@@ -28,9 +38,9 @@ def sanitize_object(dictionary, key):
         dictionary[key] = dictionary[key].replace(special_char,'\\' + special_char)
 
 def transform_linkedin(profile):
-  print("transforming %s" % profile)
-  for key, value in profile.iteritems() :
-    print key, value
+  #logging.debug("transforming %s" % profile)
+  #for key, value in profile.iteritems() :
+  #  print key, value
 
   firstName = profile['firstName']
   lastName = profile['lastName']

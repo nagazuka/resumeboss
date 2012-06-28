@@ -69,7 +69,7 @@
 
         if ('pictureUrl' in profile) {
           profHTML += " <button class='close' data-dismiss='alert'>×</button>"
-          profHTML += "<p><img id='pictureUrl' src='" + profile.pictureUrl + "' />";
+          profHTML += "<p><h6>Photo</h6><img id='pictureUrl' src='" + profile.pictureUrl + "' /></p>";
         }
 
         if ('summary' in profile) {

@@ -19,6 +19,14 @@ def transform_dates(position):
 
     return "%s - %s" % (startDate, endDate)
 
+def sanitize_object(dictionary, key):
+    if not key in dictionary or len(dictionary[key]) == 0:
+      dictionary[key] = ' '
+    else:
+      dictionary[key] = dictionary[key].replace('\n',r'\\')
+      for special_char in ['&','%','$','_','^','#','~','{','}']:
+        dictionary[key] = dictionary[key].replace(special_char,'\\' + special_char)
+
 def transform_linkedin(profile):
   print("transforming %s" % profile)
   for key, value in profile.iteritems() :
@@ -46,21 +54,11 @@ def transform_linkedin(profile):
 
   for position in positions:
     position['period'] = transform_dates(position)    
-
-    if not 'summary' in position or len(position['summary']) == 0:
-      position['summary'] = ' '
-    else:
-      position['summary'] = position['summary'].replace('\n',r'\\')
-      position['summary'] = position['summary'].replace('&',r'\&')
+    sanitize_object(position, 'summary')
 
   for education in educations:
     education['period'] = transform_dates(education)
-    if not 'notes' in position or len(position['notes']) == 0:
-      position['notes'] = ' '
-    else:
-      position['notes'] = position['notes'].replace('\n',r'\\')
-      position['notes'] = position['notes'].replace('&',r'\&')
-
+    sanitize_object(education, 'notes')
    
   context = {}
   context['name'] = name

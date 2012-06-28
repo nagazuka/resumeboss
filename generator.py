@@ -1,4 +1,5 @@
 import shutil
+import logging
 import subprocess
 import tempfile
 import os
@@ -8,10 +9,11 @@ import transform
 from settings import * 
 
 resume_prefix = 'cv-template-rendered'
+interaction_mode = '-interaction=nonstopmode'
 
 def execute_latex(tempdir):
-  print("Executing latex")
-  subprocess.call([PDFLATEX,template_path(tempdir)], cwd=tempdir)
+  logging.info("Executing latex")
+  subprocess.call([PDFLATEX, interaction_mode, template_path(tempdir)], cwd=tempdir)
 
 def copy_resume(tempdir):
   path, download_file = download_path() 
@@ -58,7 +60,7 @@ def transform_profile(profile):
 def generate(profile, template_name, callback):
 
   tempdir = create_tempdir()
-  print("tempdir: %s" % tempdir)
+  logging.info("tempdir: %s" % tempdir)
 
   context = transform_profile(profile) 
   render_template(tempdir, context, template_name)
@@ -67,7 +69,9 @@ def generate(profile, template_name, callback):
   execute_latex(tempdir)
 
   download_file = copy_resume(tempdir)
-  delete_tempdir(tempdir)
 
-  print("download_file: %s" % download_file)
+  if not DEBUG:
+    delete_tempdir(tempdir)
+
+  logging.info("download_file: %s" % download_file)
   callback(download_file)

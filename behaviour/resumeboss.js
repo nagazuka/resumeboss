@@ -67,6 +67,11 @@
         var profHTML = "<h2>" + profile.firstName + " " + profile.lastName + "</h2>"; 
         profHTML += "<h4>" + profile.headline + "</h4>"; 
 
+        if ('pictureUrl' in profile) {
+          profHTML += " <button class='close' data-dismiss='alert'>×</button>"
+          profHTML += "<p><img id='pictureUrl' src='" + profile.pictureUrl + "' />";
+        }
+
         if ('summary' in profile) {
           profHTML += " <button class='close' data-dismiss='alert'>×</button>"
           profHTML += "<p><h6>Summary</h6>"+profile.summary+"</p>";

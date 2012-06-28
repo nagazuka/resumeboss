@@ -1,4 +1,5 @@
 import shutil
+import urllib
 import logging
 import subprocess
 import tempfile
@@ -35,10 +36,8 @@ def template_path(dir):
   template_path = os.path.join(dir,resume_prefix +'.tex')
   return template_path
 
-def photo_paths(dir):
-  photo_path1 = os.path.join(dir,'photo.pdf')
-  photo_path2 = os.path.join(dir,'picture.jpg')
-  return [photo_path1, photo_path2]
+def photo_path(dir):
+  return os.path.join(dir,'picture.jpg')
 
 def download_path():
   download_dir = '/var/www/vhosts/nagazuka.nl/httpdocs/resumeboss/download/'
@@ -47,25 +46,26 @@ def download_path():
   resume_path = os.path.join(download_dir,resume_file)
   return resume_path, resume_file
 
-def copy_template(tempdir):
-  for photo_path in photo_paths(TEMPLATE_DIR):
-    shutil.copy(photo_path, tempdir)
-
 def delete_tempdir(dir):
   shutil.rmtree(dir)
 
 def transform_profile(profile):
   return transform.transform_linkedin(profile)
 
-def generate(profile, template_name, callback):
+def retrieve_picture(profile, tempdir):
+  if 'pictureUrl' in profile:
+    picture_url = profile['pictureUrl']
+    picture_path = photo_path(tempdir)
+    urllib.urlretrieve(picture_url, picture_path) 
 
+def generate(profile, template_name, callback):
   tempdir = create_tempdir()
   logging.info("tempdir: %s" % tempdir)
 
   context = transform_profile(profile) 
+  retrieve_picture(profile, tempdir)
   render_template(tempdir, context, template_name)
 
-  copy_template(tempdir)
   execute_latex(tempdir)
 
   download_file = copy_resume(tempdir)

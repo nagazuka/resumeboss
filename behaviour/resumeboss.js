@@ -6,8 +6,14 @@
       return str;
     }
 
-    function getDateStr(dateObj) {
+    function getDateStr(dateObj, isCurrent) {
       var str = "";
+
+
+      if (isCurrent == true || isCurrent == 'true') {
+        return 'present';
+      }
+
       if (dateObj) {
         if (dateObj.month) {
           str += dateObj.month;
@@ -82,7 +88,7 @@
         $.each(positions, function(index, item) {
           profHTML += " <button class='close' data-dismiss='alert'>×</button>"
           profHTML += "<h4>" + item.company.name + "</h4>"; 
-          profHTML += "<h4><small>" + getDateStr(item.startDate) + " - "+ getDateStr(item.endDate) + "</small></h4>"; 
+          profHTML += "<h4><small>" + getDateStr(item.startDate) + " - "+ getDateStr(item.endDate, item.isCurrent) + "</small></h4>"; 
           profHTML += "<p>" + getSummaryStr(item.summary) + "</p>"; 
         });
 
@@ -124,6 +130,7 @@
         var confirmButton = $("#step3-generate")
         confirmButton.on("click", function() {
           generateResume(profile);
+          _gaq.push(['_trackEvent', 'Buttons', 'Generate Resume']);
           return false;
         });
         confirmButton.removeClass("hide");
@@ -165,28 +172,16 @@
           $("#step3-status").addClass("label-success");
           $("#step3-row").removeClass("hide");
           scrollTo("#step3-download-link");
+          _gaq.push(['_trackEvent', 'Generate Request', 'Success', file]);
         });
 
         request.fail(function(jqXHR, textStatus) {
-          step3Spinner.stop(); 
-          alert( "Request failed: " + textStatus + ", status code " + jqXHR.status );
+          step3Spinner.stop();
+          var errorMsg = "Request failed: " + textStatus + ", status code " + jqXHR.status; 
+          alert(errorMsg );
+          _gaq.push(['_trackEvent', 'Generate Request', 'Failure', errorMsg]);
         });
 
-        /*
-        $.post('/generate', {'template': 'plain-cv', 'profile': profStr}, function(data, status, xhr){
-          alert('status ' + status);
-          var file = data;
-          var linkHTML = "<p><a href='download/" + file + "' target='_blank'><img src='images/pdf1.png'></a></p>"; 
-          linkHTML += "<p><a href='download/" + file + "' target='_blank'>Download resume</a></p>"; 
-          step3Spinner.stop(); 
-          $("#step3-download-link").html(linkHTML);
-          $("#step3-download-link").removeClass("hide");
-          $("#step3-status").text("Done!");
-          $("#step3-status").addClass("label-success");
-          $("#step3-row").removeClass("hide");
-          scrollTo("#step3-download-link");
-        })
-        */
         return false;
       }
     }

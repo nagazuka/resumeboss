@@ -147,6 +147,7 @@
         $("#step3-spinner").empty();
 
         $("#step3-status").text("Loading...");
+        $("#step3-generate").button("loading");
         $("#empty-row-spinner").removeClass("hide");
         var step3Spinner = createSpinner('#step3-spinner');
         scrollTo("#step3-spinner");
@@ -166,9 +167,11 @@
           linkHTML += "<p><a href='download/" + file + "' target='_blank'>Download resume</a></p>"; 
           step3Spinner.stop(); 
           $("#empty-row-spinner").addClass("hide");
+          $("step3-alert").addClass("hide");
           $("#step3-download-link").html(linkHTML);
           $("#step3-download-link").removeClass("hide");
           $("#step3-status").text("Done!");
+          $("#step3-generate").button("reset");
           $("#step3-status").addClass("label-success");
           $("#step3-row").removeClass("hide");
           scrollTo("#step3-download-link");
@@ -177,8 +180,9 @@
 
         request.fail(function(jqXHR, textStatus) {
           step3Spinner.stop();
+          $("step3-alert").removeClass("hide");
           var errorMsg = "Request failed: " + textStatus + ", status code " + jqXHR.status; 
-          alert(errorMsg );
+          //alert(errorMsg );
           _gaq.push(['_trackEvent', 'Generate Request', 'Failure', errorMsg]);
         });
 

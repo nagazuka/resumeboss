@@ -144,6 +144,7 @@
         $("#step2-status").text("Done!");
         $("#step2-status").addClass("label-success");
         $("#step3-row").addClass("hide");
+        $("#step3-alert").addClass("hide");
         $("#step3-spinner").empty();
 
         $("#step3-status").text("Loading...");
@@ -167,7 +168,7 @@
           linkHTML += "<p><a href='download/" + file + "' target='_blank'>Download resume</a></p>"; 
           step3Spinner.stop(); 
           $("#empty-row-spinner").addClass("hide");
-          $("step3-alert").addClass("hide");
+          $("#step3-alert").addClass("hide");
           $("#step3-download-link").html(linkHTML);
           $("#step3-download-link").removeClass("hide");
           $("#step3-status").text("Done!");
@@ -180,9 +181,11 @@
 
         request.fail(function(jqXHR, textStatus) {
           step3Spinner.stop();
-          $("step3-alert").removeClass("hide");
+          $("#step3-alert").removeClass("hide");
+          $("#step3-generate").button("reset");
           var errorMsg = "Request failed: " + textStatus + ", status code " + jqXHR.status; 
           //alert(errorMsg );
+          $("#step3-alert-details").html("Details: " + errorMsg);
           _gaq.push(['_trackEvent', 'Generate Request', 'Failure', errorMsg]);
         });
 

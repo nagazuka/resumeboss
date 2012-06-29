@@ -87,6 +87,15 @@
         <p>
           <a id="step3-generate" class="btn btn-success hide" href="#"><i class="icon-play icon-white"></i> Generate resume</a>
           <div id="step3-spinner">&nbsp;</div>
+          <div id="step3-alert" class="alert alert-error hide">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <strong>Oh snap!</strong> Something went wrong while generating your resume. Change a few things up and try submitting again.
+            <br />
+            <br />
+            <small>
+            <span id="step3-alert-details">&nbsp;</span>
+            </small>
+          </div>
         <p>
       </div>
     </div> 
@@ -107,10 +116,6 @@
           </p>
           <br />
           <div id="step3-download-link" class="well hide">&nbsp;</div>
-          <div id="step3-alert" class="alert alert-error hide">
-            <button type="button" class="close" data-dismiss="alert">×</button>
-            <strong>Oh snap!</strong> Change a few things up and try submitting again.
-          </div>
       </div>
     </div>
     <div id="debug-row" class="row hide">

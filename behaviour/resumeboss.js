@@ -74,19 +74,19 @@
         profHTML += "<h4>" + profile.headline + "</h4>"; 
 
         if ('pictureUrl' in profile) {
-          profHTML += " <button class='close' data-dismiss='alert'>×</button>"
+          //profHTML += " <button class='close' data-dismiss='alert'>×</button>"
           profHTML += "<p><h6>Photo</h6><img id='pictureUrl' src='" + profile.pictureUrl + "' /></p>";
         }
 
         if ('summary' in profile) {
-          profHTML += " <button class='close' data-dismiss='alert'>×</button>"
+          //profHTML += " <button class='close' data-dismiss='alert'>×</button>"
           profHTML += "<p><h6>Summary</h6>"+profile.summary+"</p>";
         }
 
         profHTML += "<h3>Experience</h3>"; 
         var positions = profile.positions.values;
         $.each(positions, function(index, item) {
-          profHTML += " <button class='close' data-dismiss='alert'>×</button>"
+          //profHTML += " <button class='close' data-dismiss='alert'>×</button>"
           profHTML += "<h4>" + item.company.name + "</h4>"; 
           profHTML += "<h4><small>" + getDateStr(item.startDate) + " - "+ getDateStr(item.endDate, item.isCurrent) + "</small></h4>"; 
           profHTML += "<p>" + getSummaryStr(item.summary) + "</p>"; 
@@ -95,7 +95,7 @@
         profHTML += "<h3>Education</h3>"; 
         var educations = profile.educations.values;
         $.each(educations, function(index, item) {
-          profHTML += " <button class='close' data-dismiss='alert'>×</button>"
+          //profHTML += " <button class='close' data-dismiss='alert'>×</button>"
           profHTML += "<h4>" + item.schoolName + "</h4>"; 
           profHTML += "<h4><small>" + getDateStr(item.startDate) + " - "+ getDateStr(item.endDate) + "</small></h4>"; 
           profHTML += "<p>" + item.fieldOfStudy + ", " + item.degree + "</p>"; 
@@ -103,17 +103,17 @@
         });
 
         if (certifications in profile && values in profile.certifications) {
-        profHTML += " <button class='close' data-dismiss='alert'>×</button>"
-        profHTML += "<h3>Certifications</h3>"; 
-        profHTML += "<ul>";
-        var certifications = profile.certifications.values;
-        $.each(certifications, function(index, item) {
-          profHTML += "<li>" + item.name + "</li>"; 
-        });
-        profHTML += "</ul>";
+          //profHTML += " <button class='close' data-dismiss='alert'>×</button>"
+          profHTML += "<h3>Certifications</h3>"; 
+          profHTML += "<ul>";
+          var certifications = profile.certifications.values;
+          $.each(certifications, function(index, item) {
+            profHTML += "<li>" + item.name + "</li>"; 
+          });
+          profHTML += "</ul>";
         }
 
-        profHTML += " <button class='close' data-dismiss='alert'>×</button>"
+        //profHTML += " <button class='close' data-dismiss='alert'>×</button>"
         profHTML += "<h3>Skills</h3>"; 
         profHTML += "<p>";
         var skills = profile.skills.values;

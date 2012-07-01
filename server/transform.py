@@ -56,6 +56,12 @@ def sanitize_item(v):
 def sanitize_str(s):
   result = s
   result = result.replace('\n',r'\\')
+  # &lsquo;
+  result = result.replace(unichr(0x2018),"`")
+  result = result.replace(unichr(0x2019),"'")
+  result = result.replace(unichr(0x201C),"``")
+  result = result.replace(unichr(0x201D),"''")
+  result = result.replace(unichr(0x2014),"---")
   for special_char in ['&','%','$','_','^','#','~','{','}']:
     result = result.replace(special_char,'\\' + special_char)
   return result

@@ -29,13 +29,41 @@ def transform_dates(position):
 
     return "%s - %s" % (startDate, endDate)
 
-def sanitize_object(dictionary, key):
-    if not key in dictionary or len(dictionary[key]) == 0:
-      dictionary[key] = ' '
-    else:
-      dictionary[key] = dictionary[key].replace('\n',r'\\')
-      for special_char in ['&','%','$','_','^','#','~','{','}']:
-        dictionary[key] = dictionary[key].replace(special_char,'\\' + special_char)
+def sanitize_dict(dictionary):
+  for k, v in dictionary.iteritems():
+    dictionary[k] = sanitize_item(v)
+
+    #if isinstance(v, dict):
+    #  dictionary[k] = sanitize_dict(v)
+    # elif isinstance(v, list):
+    #   dictionary[k] = [sanitize_item(x) for x in v]
+    #elif isinstance(v, basestring):
+    #  dictionary[k] = sanitize_str(v)
+    #else:
+    #  dictionary[k] = v
+
+  return dictionary
+
+def sanitize_item(v):
+    if isinstance(v, dict):
+       v = sanitize_dict(v)
+    elif isinstance(v, list):
+       v = [sanitize_item(x) for x in v]
+    elif isinstance(v, basestring):
+       v = sanitize_str(v)
+    return v
+ 
+def sanitize_str(s):
+  result = s
+  result = result.replace('\n',r'\\')
+  for special_char in ['&','%','$','_','^','#','~','{','}']:
+    result = result.replace(special_char,'\\' + special_char)
+  return result
+
+def replace_missing_keys(dictionary, keys):
+   for k in keys:
+    if not k in dictionary:
+      dictionary[k] = ''
 
 def transform_linkedin(profile):
   #logging.debug("transforming %s" % profile)
@@ -63,12 +91,12 @@ def transform_linkedin(profile):
     paired_skills.append( (skill1, skill2) ) 
 
   for position in positions:
-    position['period'] = transform_dates(position)    
-    sanitize_object(position, 'summary')
+    position['period'] = transform_dates(position) 
+    replace_missing_keys(position, ['summary'])
 
   for education in educations:
     education['period'] = transform_dates(education)
-    sanitize_object(education, 'notes')
+    replace_missing_keys(education, ['notes'])
    
   context = {}
   context['name'] = name
@@ -80,5 +108,7 @@ def transform_linkedin(profile):
   context['educations'] = educations
   context['certifications'] = certifications
   context['skills'] = paired_skills
+
+  context = sanitize_dict(context)
 
   return context

@@ -1,15 +1,23 @@
 from itertools import izip
 import logging
 
+months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
+
 def pairwise(iterable):
     a = iter(iterable)
     return izip(a, a)
 
+def convert_month(num):
+    if num > 0 and num < 13:
+      return months[num-1]
+    else:
+      logging.warn("Cannot convert month with value %s"  % num) 
+      return '' 
 
 def transform_date(date):
     res = ''
     if 'month' in date:
-      res = res + str(date['month']) + '/'
+      res = res + convert_month(date['month']) + " " 
     if 'year' in date:
       res = res + str(date['year']) 
     return res

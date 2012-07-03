@@ -28,8 +28,23 @@ class MainHandler(tornado.web.RequestHandler):
         self.write(filename)
         self.finish()
 
+class FeedbackHandler(tornado.web.RequestHandler):
+    def post(self):
+        email_address = self.get_argument('email_address', '')
+        name = self.get_argument('name', '')
+        feedback = self.get_argument('feedback', '')
+        text = "Name: %s\n" % name
+        text = text + "E-mail: %s\n" % email_address
+        text = text + "Feedback: %s\n" % feedback
+        to_addr = "s.anoep@gmail.com"
+        from_addr = "tornado-resumeboss@nagazuka.nl"
+        subject = "[ResumeBoss] [INFO] Feedback" 
+        mail.mail(text, from_addr, to_addr, subject)
+        self.finish()
+
 application = tornado.web.Application([
     (r"/generate", MainHandler),
+    (r"/feedback", FeedbackHandler)
 ], debug=True)
 
 if __name__ == "__main__":

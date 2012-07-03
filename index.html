@@ -118,6 +118,58 @@
           <div id="step3-download-link" class="well hide">&nbsp;</div>
       </div>
     </div>
+    <div id="feedback-row" class="row hide">
+      <div class="span4">
+        <h2>Step 4 <small>Leave Feedback</small></h2>
+        <p>ResumeBoss is still a work in progress, so we appreciate any feedback that you can give to us!</p>
+      </div>
+      <div class="span5 offset1">
+        <p>
+          <span id="feedback-status" class="label hide">Not yet submitted</span>
+        </p>
+        <div id="feedback-success" class="alert alert-success hide">
+          <button type="button" class="close" data-dismiss="alert">×</button>
+          <strong>Thanks!</strong> We have received your feedback, we will keep improving ResumeBoss with your suggestions. Have a nice day! 
+        </div>
+        <div id="feedback-alert" class="alert alert-error hide">
+          <button type="button" class="close" data-dismiss="alert">×</button>
+          <strong>Oh snap!</strong> Something went wrong while generating your resume. Change a few things up and try submitting again.
+          <br />
+          <br />
+          <small>
+            <span id="feedback-alert-details">&nbsp;</span>
+          </small>
+        </div>
+        <form id="feedback-form" class="form-horizontal">
+        <fieldset>
+          <div class="control-group">
+            <label class="control-label" for="feedback-name-input">Your Name</label>
+            <div class="controls">
+              <input type="text" class="input-xlarge" id="feedback-name-input">
+              <p class="help-block">(optional)</p>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label" for="feedback-mail-input">Your E-mail Address</label>
+            <div class="controls">
+              <input type="text" class="input-xlarge" id="feedback-mail-input">
+              <p class="help-block">(optional)</p>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label" for="feedback-text-input">Your Feedback</label>
+            <div class="controls">
+              <textarea class="input-xlarge" id="feedback-text-input" rows="5"></textarea>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button id="feedback-submit" type="submit" class="btn btn-primary">Submit</button>
+          </div>
+        </fieldset>
+      </form>
+
+      </div>
+    </div>
     <div id="debug-row" class="row hide">
       <div id="debug" class="span10">
       &nbsp;

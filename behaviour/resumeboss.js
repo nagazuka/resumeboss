@@ -134,11 +134,52 @@
           return false;
         });
         confirmButton.removeClass("hide");
+
+        var submitButton = $("#feedback-submit");
+        submitButton.on("click", function() {
+            sendFeedback();
+            _gaq.push(['_trackEvent', 'Buttons', 'Submit Feedback']);
+            return false;
+        });
         
         var debugHTML = "<h3>Debug</h3>"; 
         debugHTML += "<code>" + JSON.stringify(result) + "</code>";
         $("#debug").html(debugHTML);
       });
+
+      function sendFeedback() {
+        $("#feedback-alert").addClass("hide");
+        $("#feedback-success").addClass("hide");
+        $("#feedback-submit").button("loading");
+
+        var name = $("#feedback-name-input").val();
+        var email_address = $("#feedback-mail-input").val();
+        var feedback = $("#feedback-text-input").val();
+        var request = $.ajax({
+          url: "/feedback",
+          type: "POST",
+          data: {'email_address': email_address, 'name': name, 'feedback': feedback},
+        });
+
+        request.done(function(data) {
+          $("#feedback-form").addClass("hide");
+          $("#feedback-success").removeClass("hide");
+          $("#feedback-status").text("Done!");
+          $("#feedback-status").addClass("label-success");
+          $("#feedback-submit").button("reset");
+          _gaq.push(['_trackEvent', 'Send Feedback', 'Success', data]);
+        });
+
+        request.fail(function(jqXHR, textStatus) {
+          $("#feedback-alert").removeClass("hide");
+          $("#feedback-submit").button("reset");
+          var errorMsg = "Request failed: " + textStatus + ", status code " + jqXHR.status; 
+          //alert(errorMsg );
+          $("#feedback-alert-details").html("Details: " + errorMsg);
+          _gaq.push(['_trackEvent', 'Send Feedback', 'Failure', errorMsg]);
+        });
+
+      }
 
       function generateResume(profile) {
         $("#step2-status").text("Done!");
@@ -177,12 +218,14 @@
           $("#step3-row").removeClass("hide");
           scrollTo("#step3-download-link");
           _gaq.push(['_trackEvent', 'Generate Request', 'Success', file]);
+          $("#feedback-row").removeClass("hide");
         });
 
         request.fail(function(jqXHR, textStatus) {
           step3Spinner.stop();
           $("#step3-alert").removeClass("hide");
           $("#step3-generate").button("reset");
+          $("#feedback-row").removeClass("hide");
           var errorMsg = "Request failed: " + textStatus + ", status code " + jqXHR.status; 
           //alert(errorMsg );
           $("#step3-alert-details").html("Details: " + errorMsg);

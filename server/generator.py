@@ -49,8 +49,8 @@ def download_path():
 def delete_tempdir(dir):
   shutil.rmtree(dir)
 
-def transform_profile(profile):
-  return transform.transform_linkedin(profile)
+def transform_profile(profile, additional_info):
+  return transform.transform_linkedin(profile, additional_info)
 
 def retrieve_picture(profile, tempdir):
   if 'pictureUrl' in profile:
@@ -58,11 +58,12 @@ def retrieve_picture(profile, tempdir):
     picture_path = photo_path(tempdir)
     urllib.urlretrieve(picture_url, picture_path) 
 
-def generate(profile, template_name, callback):
+def generate(profile, additional_info, template_name, callback):
   tempdir = create_tempdir()
   logging.info("tempdir: %s" % tempdir)
 
-  context = transform_profile(profile) 
+  context = transform_profile(profile, additional_info)
+
   retrieve_picture(profile, tempdir)
   render_template(tempdir, context, template_name)
 

@@ -125,6 +125,7 @@
         step2Spinner.stop();
         $("#step2-status").text("Not yet reviewed");
         $("#profile").html(profHTML);
+        $("#additional-info").removeClass("hide");
 
         //Show confirm buttons after loading
         var confirmButton = $("#step3-generate")
@@ -181,10 +182,19 @@
 
       }
 
+      function getAdditionalInfo() {
+        var mail = $("#additional-info-mail-input").val();
+        var phone = $("#additional-info-phone-input").val();
+        var mobile = $("#additional-info-mobile-input").val();
+        var additionalInfo = {"mail" : mail, "phone": phone, "mobile": mobile};
+        return additionalInfo;
+      }
+
       function generateResume(profile) {
         $("#step2-status").text("Done!");
         $("#step2-status").addClass("label-success");
         $("#step3-row").addClass("hide");
+        $("#feedback-row").addClass("hide");
         $("#step3-alert").addClass("hide");
         $("#step3-spinner").empty();
 
@@ -195,12 +205,14 @@
         scrollTo("#step3-spinner");
 
         $("#step3-status").removeClass("hide");
+
         var profStr = JSON.stringify(profile);
-        
+        var addStr = JSON.stringify(getAdditionalInfo());
+ 
         var request = $.ajax({
           url: "/generate",
           type: "POST",
-          data: {'template': 'modern-cv', 'profile': profStr},
+          data: {'template': 'modern-cv', 'profile': profStr, 'additional-info': addStr},
         });
 
         request.done(function(data) {

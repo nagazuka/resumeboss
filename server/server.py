@@ -12,9 +12,11 @@ class MainHandler(tornado.web.RequestHandler):
     def post(self):
         template_name = self.get_argument('template', '')
         profile = self.get_argument('profile', '')
+        additional_info = self.get_argument('additional-info', '')
         try:
           profDict = json.loads(profile)
-          filename = generator.generate(profDict, template_name, callback=self.on_generate)
+          addinfo_dict = json.loads(additional_info)
+          filename = generator.generate(profDict, addinfo_dict, template_name, callback=self.on_generate)
         except Exception as e:
           text = "Error occurred during processing:\n%s\nStacktrace:\n" % e
           text = text + traceback.format_exc()

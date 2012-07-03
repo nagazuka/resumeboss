@@ -71,7 +71,7 @@ def replace_missing_keys(dictionary, keys):
     if not k in dictionary:
       dictionary[k] = ''
 
-def transform_linkedin(profile):
+def transform_linkedin(profile, additional_info):
   #logging.debug("transforming %s" % profile)
   #for key, value in profile.iteritems() :
   #  print key, value
@@ -103,7 +103,8 @@ def transform_linkedin(profile):
   for education in educations:
     education['period'] = transform_dates(education)
     replace_missing_keys(education, ['notes'])
-   
+
+ 
   context = {}
   context['name'] = name
   context['firstName'] = firstName
@@ -114,6 +115,13 @@ def transform_linkedin(profile):
   context['educations'] = educations
   context['certifications'] = certifications
   context['skills'] = paired_skills
+
+  additional_fields = ['mail','phone','mobile']
+  for additional_field in additional_fields:
+    if additional_field in additional_info:
+      context[additional_field] = sanitize_str(additional_info[additional_field])
+    else:
+      context[additional_field] = ''
 
   context = sanitize_dict(context)
 

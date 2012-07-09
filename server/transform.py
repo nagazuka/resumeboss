@@ -110,7 +110,7 @@ def transform_linkedin(profile, additional_info):
 
   for education in educations:
     education['period'] = transform_dates(education)
-    replace_missing_keys(education, ['notes'])
+    replace_missing_keys(education, ['notes','fieldOfStudy'])
 
  
   context = {}

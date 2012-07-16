@@ -132,7 +132,7 @@
         var confirmButton = $("#step3-generate")
         confirmButton.on("click", function() {
           generateResume(profile);
-          _gaq.push(['_trackEvent', 'Buttons', 'Generate Resume']);
+          _gaq.push(['_trackEvent', 'Generate Resume', 'Button Clicked']);
           return false;
         });
         confirmButton.removeClass("hide");
@@ -140,7 +140,7 @@
         var submitButton = $("#feedback-submit");
         submitButton.on("click", function() {
             sendFeedback();
-            _gaq.push(['_trackEvent', 'Buttons', 'Submit Feedback']);
+            _gaq.push(['_trackEvent', 'Submit Feedback', 'Button Clicked']);
             return false;
         });
         
@@ -158,9 +158,9 @@
         var email_address = $("#feedback-mail-input").val();
         var feedback = $("#feedback-text-input").val();
         var request = $.ajax({
-          url: "/feedback",
+          url: "/resumeboss/feedback",
           type: "POST",
-          data: {'email_address': email_address, 'name': name, 'feedback': feedback},
+          data: {'email_address': email_address, 'name': name, 'feedback': feedback}
         });
 
         request.done(function(data) {
@@ -211,9 +211,9 @@
         var addStr = JSON.stringify(getAdditionalInfo());
  
         var request = $.ajax({
-          url: "/generate",
+          url: "/resumeboss/generate",
           type: "POST",
-          data: {'template': 'modern-cv', 'profile': profStr, 'additional-info': addStr},
+          data: {'template': 'modern-cv', 'profile': profStr, 'additional-info': addStr}
         });
 
         request.done(function(data) {

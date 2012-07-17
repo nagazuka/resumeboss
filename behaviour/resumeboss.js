@@ -76,7 +76,11 @@
 
         if ('pictureUrl' in profile) {
           //profHTML += " <button class='close' data-dismiss='alert'>×</button>"
-          profHTML += "<p><h6>Photo</h6><img id='pictureUrl' src='" + profile.pictureUrl + "' /></p>";
+          var pictureUrl = profile.pictureUrl;
+          if (pictureUrl) {
+            var secureUrl = pictureUrl.replace("http:","https:");
+            profHTML += "<p><h6>Photo</h6><img id='pictureUrl' src='" + secureUrl + "' /></p>";
+           }
         }
 
         if ('summary' in profile) {
